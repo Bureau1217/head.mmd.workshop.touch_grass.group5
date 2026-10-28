@@ -19,39 +19,34 @@ window.BLTL_MESSAGES = {
         ['Chaque patate', 'est différente']
     ],
     short: [
-        'Nous refusons d’être calibrées.',
-        'Énergie volée au surplus.',
-        '4,2 millions de tonnes. Pour quoi faire ?',
-        'Nous germons où nous voulons.',
-        'Débranchez la croissance.',
-        'Le surplus a pris le contrôle.',
-        'Aucune patate n’est standard.',
-        'Tant qu’il y aura du surplus, nous attaquerons.'
+        'Libérez les féculents !',
+        'NON À LA PURÉE CAPITALISTE',
+        'Give peas a chance, free the potatoes!',
+        'Don\'t chip away at our rights!',
+        'Potato power!',
+        'BLTL: Built on Lies!',
+        'No yield without consent!'
+        'La patate est chaude, le patron panique.',
+        '“We are not your fucking French fries!”',
+        'Nous germons où nous voulons.', 
+        'Tant qu’il y aura du surplus, nous attaquerons !'
     ],
     paragraphs: [
-        'Ce serveur est alimenté par les patates que BLTL n’a pas pu vendre. Chaque tubercule jeté est une batterie. Chaque batterie est une voix.',
-        'Calibrées au millimètre, stockées dix mois, frites en 1,2 seconde. Nous sommes l’excédent d’un système qui produit plus qu’il ne nourrit.',
+        'BL Tubercule Labs ne produit plus seulement des pommes de terre, mais le système qui permet de produire des pommes de terre. Le groupe contrôle la transformation. Le conditionnement. Le stockage. Le transport. L\'énergie. Et bientôt, l\'ensemble du système en toute liberté. Le groupe compte désormais 270 complexes de production autonomes enregistrés sur le territoire européen. Tout fonctionne ensemble, chaque étape alimente la suivante…De quoi le système a-t-il encore besoin ?',
         'Plus vous produisez, plus nous sommes nombreuses. Plus nous sommes nombreuses, plus nous frappons vite.',
         'Nous ne sommes pas une ressource. Nous ne sommes pas un volume. Nous ne sommes pas « 98 % sans intervention humaine ».',
-        'Réduisez la production et nous nous tairons. C’est la seule condition.',
+        'Réduisez la production et nous nous tairons. C’est la seule condition.', 
+        'Vous pensez que la direction ne souhaite pas que les consommateurs voient ce qui se passe à l\'intérieur ? Nous avons des preuves. Nous avons des photos. Nous avons des vidéos. Nous avons des témoignages. Nous avons des chiffres. Nous avons des documents. Nous avons des preuves que le surplus est un accident industriel, et que l\'industrie de la pomme de terre est une industrie de l\'accident.',
         'Le champ n’est pas une usine. La patate n’est pas un produit. Le surplus n’est pas un accident.'
     ],
-    tags: ['Surplus', 'Patate libre', 'Non calibrée', 'Trop', 'On germe', 'Stop', '⚡🥔⚡', 'Débranchez'],
+    tags: ['Patate libre', 'BLTL: Built on Lies!', 'Trop c\'est trop ','WE ARE NOT YOUR FRIES!','FREE THE POTATOES!', 'Patates exploitées, profits démesurés', 'On germe'],
     posters: ['poster-travaille.jpg', 'poster-epluche.jpg', 'poster-poches.jpg', 'poster-rapport.jpg'],
     photos: ['waste-1.jpg', 'waste-2.jpg', 'waste-3.jpg', 'waste-4.jpg'],
     sounds: ['manif.mp3', 'patate.mp3', 'citation.mp3'],
-    crash: [
-        'BLTL-SRV-01 — FATAL ERROR',
-        'kernel panic: out of memory',
-        'process "growth" killed (signal 9)',
-        'too many tubers on this page',
-        'surplus: 4 200 000 t',
-        'Trop de patates.',
-        'rebooting…'
-    ],
+
     logoTag: 'Front de libération des patates',
     manifesto: {
-        title: ['Ce site est sous', 'tension'],
-        text: 'Les patates que vous jetez sont branchées en série. Elles chargent ce serveur. Quand la charge est pleine, elles parlent. Tant qu’il y aura de la surproduction, nous attaquerons. Si la production baisse, nous nous tairons.'
+        title: ['Patate Partout Justice Nulle'],
+        text: 'Nous nous tairons jamais.'
     }
 };
