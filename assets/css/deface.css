@@ -1,0 +1,211 @@
+/* BLTL — defacement effects, driven by js/deface.js. Colours in variables.css */
+
+/* Charge of the virtual supercapacitor */
+#charge {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 4px;
+    background: var(--hack-color);
+    transition: width .1s linear;
+}
+
+/* Replaced texts */
+.hacked {
+    background: var(--hack-bg);
+    color: var(--hack-text);
+    font-family: var(--font-hack);
+}
+
+.hacked .hl {
+    color: var(--hack-color);
+}
+
+/* Graffiti, posters and stickers: one layer over the whole page */
+body {
+    position: relative;
+}
+
+#layer {
+    position: absolute;
+    z-index: 50;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+#layer > * {
+    position: absolute;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.poster {
+    max-width: 320px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+}
+
+.tag {
+    font-family: var(--font-hack);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--hack-color);
+    opacity: .85;
+}
+
+/* Stage 2: photos and layout start to rot */
+.deface-2 .photo img {
+    filter: sepia(.6) hue-rotate(40deg) saturate(1.6);
+}
+
+.deface-2 .card:nth-child(odd) {
+    transform: rotate(.6deg);
+}
+
+.deface-2 .card:nth-child(even) {
+    transform: rotate(-.8deg);
+}
+
+/* Stage 3: the brand colours turn */
+html.deface-3 {
+    --primary-color: var(--rot-primary);
+    --primary-dark: var(--rot-primary-dark);
+    --secondary-color: var(--rot-secondary);
+    --background-alt: var(--rot-background);
+}
+
+.deface-3 .hero {
+    background-color: var(--rot-primary);
+    background-blend-mode: multiply;
+}
+
+/* Stage 4: takeover */
+.deface-4 .logo_mark {
+    text-decoration: line-through;
+    text-decoration-color: var(--hack-color);
+    text-decoration-thickness: .12em;
+}
+
+.manifesto {
+    padding: var(--section-gap) 0;
+    background: var(--hack-color);
+    color: var(--hack-bg);
+    font-family: var(--font-hack);
+}
+
+.manifesto h2 {
+    font-size: var(--big-text);
+    color: inherit;
+}
+
+.manifesto .hl {
+    color: #fff;
+}
+
+.manifesto p {
+    max-width: 40em;
+    font-size: 1.2rem;
+}
+
+/* Overload: close to the crash, the page trembles */
+.overload .header,
+.overload section,
+.overload .footer {
+    animation: tremble .25s infinite;
+}
+
+@keyframes tremble {
+    0%, 100% { transform: none; }
+    50% { transform: translate(1px, -1px) skewX(.4deg); }
+}
+
+/* Server crash */
+.crash {
+    position: fixed;
+    z-index: 200;
+    inset: 0;
+    padding: 10vh var(--side-gap);
+    background: #000;
+    color: var(--hack-bg);
+    font: 1.1rem/1.6 Courier, monospace;
+}
+
+.crash p:last-child:after {
+    content: '_';
+    animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* Discharge: flash + shake */
+body:after {
+    content: '';
+    position: fixed;
+    z-index: 99;
+    inset: 0;
+    background: var(--hack-bg);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.zap body {
+    animation: shake .5s;
+}
+
+.zap body:after {
+    animation: flash .6s;
+}
+
+@keyframes flash {
+    0% { opacity: .9; }
+    100% { opacity: 0; }
+}
+
+@keyframes shake {
+    0%, 100% { transform: none; }
+    20% { transform: translate(-6px, 3px); }
+    40% { transform: translate(5px, -4px); }
+    60% { transform: translate(-4px, -2px); }
+    80% { transform: translate(3px, 4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .zap body,
+    .overload .header,
+    .overload section,
+    .overload .footer { animation: none; }
+}
+
+/* Simulation panel (only on index.html?sim or when opened as a file) */
+.sim {
+    position: fixed;
+    z-index: 101;
+    right: 10px;
+    bottom: 10px;
+    width: 230px;
+    padding: 12px;
+    background: #111;
+    color: #eee;
+    font: 12px/1.5 Courier, monospace;
+}
+
+.sim strong,
+.sim label,
+.sim input {
+    display: block;
+    width: 100%;
+}
+
+.sim button {
+    margin: 6px 6px 0 0;
+    padding: 4px 8px;
+    border: 0;
+    background: var(--hack-bg);
+    color: var(--hack-text);
+    font: inherit;
+    cursor: pointer;
+}

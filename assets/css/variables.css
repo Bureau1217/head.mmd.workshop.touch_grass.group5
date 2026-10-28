@@ -1,0 +1,78 @@
+@font-face {
+    font-family: 'MuseoModerno';
+    font-weight: 800;
+    font-display: swap;
+    src: url(../fonts/museomoderno-800.woff2) format('woff2');
+}
+
+@font-face {
+    font-family: 'Credible';
+    font-weight: 400;
+    font-display: swap;
+    src: url(../fonts/credible.woff2) format('woff2');
+}
+
+:root {
+    color-scheme: light;
+
+    --background: #ffffff;
+    --background-alt: #faf4e4;
+    --text: #2b1d13;
+    --text-light: #7a6656;
+    --primary-color: #f2b705;
+    --primary-dark: #c99500;
+    --secondary-color: #4a3222;
+    --border: #e6dbc3;
+
+    --color-1: #f8d45c;
+    --color-2: #c8955a;
+    --color-3: #f1e7cf;
+    --color-4: #3a2619;
+
+    --font-logo: 'MuseoModerno', sans-serif;
+    --font-heading: 'Arial', sans-serif;
+    --font-body: Arial, Helvetica, sans-serif;
+
+    --inner-width: 940px;
+
+    --logo: 3rem;
+    --big-text: 2.2rem;
+    --h2: 1.75rem;
+    --h3: 1.375rem;
+    --h4: 1.125rem;
+    --body: 1rem;
+
+    --text-highlight: rgba(242, 183, 5, 0.35);
+    --side-gap: 20px;
+    --section-gap: 56px;
+
+    /* defacement (css/deface.css) */
+    --font-hack: 'Credible', Courier, monospace;
+    --hack-color: #4f6b12;
+    --hack-bg: #d9ec5c;
+    --hack-text: #1a2205;
+    --rot-primary: #9aa83a;
+    --rot-primary-dark: #6f7a22;
+    --rot-secondary: #26200f;
+    --rot-background: #e8e4c4;
+}
+
+@media only screen and (min-device-width: 780px) and (min-width: 780px) {
+    :root {
+        --logo: 3.6rem;
+        --big-text: 2.8rem;
+        --side-gap: 25px;
+        --section-gap: 72px;
+    }
+}
+
+@media only screen and (min-device-width: 1024px) and (min-width: 1024px) {
+
+    :root{
+        --logo: 4rem;
+        --big-text: 3.6rem;
+        --h2: 2.2rem;
+        --section-gap: 90px;
+    }
+
+}
