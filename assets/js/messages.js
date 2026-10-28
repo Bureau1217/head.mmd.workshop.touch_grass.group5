@@ -25,7 +25,7 @@ window.BLTL_MESSAGES = {
         'Don\'t chip away at our rights!',
         'Potato power!',
         'BLTL: Built on Lies!',
-        'No yield without consent!'
+        'No yield without consent!',
         'La patate est chaude, le patron panique.',
         '“We are not your fucking French fries!”',
         'Nous germons où nous voulons.', 
@@ -40,7 +40,8 @@ window.BLTL_MESSAGES = {
         'Le champ n’est pas une usine. La patate n’est pas un produit. Le surplus n’est pas un accident.'
     ],
     tags: ['Patate libre', 'BLTL: Built on Lies!', 'Trop c\'est trop ','WE ARE NOT YOUR FRIES!','FREE THE POTATOES!', 'Patates exploitées, profits démesurés', 'On germe'],
-    posters: ['poster-travaille.jpg', 'poster-epluche.jpg', 'poster-poches.jpg', 'poster-rapport.jpg'],
+    posters: ['poster-travaille.jpg', 'poster-epluche.jpg', 'poster-poches.jpg', 'poster-rapport.jpg', 'A5 greve travail.png', 
+    ],
     photos: ['waste-1.jpg', 'waste-2.jpg', 'waste-3.jpg', 'waste-4.jpg'],
     sounds: ['manif.mp3', 'patate.mp3', 'citation.mp3'],
 
