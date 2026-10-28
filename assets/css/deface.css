@@ -49,10 +49,9 @@ body {
 
 .tag {
     font-family: var(--font-hack);
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
     color: var(--hack-color);
-    opacity: .85;
 }
 
 /* Stage 2: photos and layout start to rot */
@@ -109,38 +108,6 @@ html.deface-3 {
     font-size: 1.2rem;
 }
 
-/* Overload: close to the crash, the page trembles */
-.overload .header,
-.overload section,
-.overload .footer {
-    animation: tremble .25s infinite;
-}
-
-@keyframes tremble {
-    0%, 100% { transform: none; }
-    50% { transform: translate(1px, -1px) skewX(.4deg); }
-}
-
-/* Server crash */
-.crash {
-    position: fixed;
-    z-index: 200;
-    inset: 0;
-    padding: 10vh var(--side-gap);
-    background: #000;
-    color: var(--hack-bg);
-    font: 1.1rem/1.6 Courier, monospace;
-}
-
-.crash p:last-child:after {
-    content: '_';
-    animation: blink 1s steps(1) infinite;
-}
-
-@keyframes blink {
-    50% { opacity: 0; }
-}
-
 /* Discharge: flash + shake */
 body:after {
     content: '';
@@ -150,34 +117,6 @@ body:after {
     background: var(--hack-bg);
     opacity: 0;
     pointer-events: none;
-}
-
-.zap body {
-    animation: shake .5s;
-}
-
-.zap body:after {
-    animation: flash .6s;
-}
-
-@keyframes flash {
-    0% { opacity: .9; }
-    100% { opacity: 0; }
-}
-
-@keyframes shake {
-    0%, 100% { transform: none; }
-    20% { transform: translate(-6px, 3px); }
-    40% { transform: translate(5px, -4px); }
-    60% { transform: translate(-4px, -2px); }
-    80% { transform: translate(3px, 4px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .zap body,
-    .overload .header,
-    .overload section,
-    .overload .footer { animation: none; }
 }
 
 /* Simulation panel (only on index.html?sim or when opened as a file) */
