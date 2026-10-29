@@ -44,7 +44,7 @@ const float VOLTS_PER_POTATO = 0.9;
 const float CAP_RESISTANCE = 5;       // charging = volts² / resistance, per second
 const float CAP_LEAK       = 1;        // lost per second
 const float CAP_THRESHOLD  = 200;      // discharge (attack) when reached
-const float LEVEL_VOLTS[2] = { 15 };  // level 2 from 8 potatoes, 3 from 15
+const float LEVEL_VOLTS[2] = { 7.2, 13.5 };  // level 2 from 8 potatoes, 3 from 15
 
 // When the log gets this long, everything resets and the clean site comes back
 const int   MAX_LOG = 2000;
