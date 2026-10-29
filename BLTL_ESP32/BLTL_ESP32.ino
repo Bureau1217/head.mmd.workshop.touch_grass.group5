@@ -50,7 +50,7 @@ const float LEVEL_VOLTS[2] = { 7.2, 13.5 };  // level 2 from 8 potatoes, 3 from 
 const int   MAX_LOG = 2000;
 
 // Below this voltage the chain counts as unplugged
-const float PLUGGED_VOLTS = 0.3;
+const float PLUGGED_VOLTS = 2.8;   // unplugged reads ~1.6 V (ADC offset), 4 potatoes ~4.0 V
 // While unplugged, the company repairs the site: one attack undone every…
 const unsigned long REPAIR_MS = 20000;
 
@@ -105,7 +105,7 @@ void attack() {
   int level = levelFor(lastVolts);
   attackLog[logLength++] = '0' + level;
   attackLog[logLength] = '\0';
-  Serial.printf("ATTACK #%d — level %d (%.1f V)\n", logLength, level, lastVolts);
+  Serial.printf("ATTACK #%d - level %d (%.1f V)\n", logLength, level, lastVolts);
   lcdShowAttack(LCD_SLOGANS[random(NUM_SLOGANS)]);
 }
 
@@ -115,7 +115,7 @@ bool isPlugged() { return lastVolts >= PLUGGED_VOLTS; }
 void repair() {
   logLength--;
   attackLog[logLength] = '\0';
-  Serial.printf("REPAIR — %d attacks left\n", logLength);
+  Serial.printf("REPAIR - %d attacks left\n", logLength);
 }
 
 void updateCapacitor() {
@@ -315,7 +315,7 @@ void setup() {
   server.begin();
 
   lastTick = millis();
-  Serial.printf("\nBLTL-GUEST up at %s — the potatoes are watching.\n",
+  Serial.printf("\nBLTL-GUEST up at %s - the potatoes are watching.\n",
                 WiFi.softAPIP().toString().c_str());
 }
 

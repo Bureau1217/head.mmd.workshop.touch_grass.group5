@@ -1,12 +1,10 @@
 /* BLTL — defacement.
    4 times a second, asks the ESP32 for its state (/state):
-     { "charge": 0…1, "log": "1123", "potatoes": 12, "plugged": true, ... }
-   - plugged:  goes from false to true → flash
-   - charge:   the charge bar at the bottom of the page
+     { "charge": 0…1, "log": "1123", "potatoes": 12, ... }
    - log:      one digit per attack = its level (1, 2 or 3)
        log gets longer  → attack
        log gets shorter → repair (the company undoes the last attack)
-   - potatoes: goes up → potatoAdded() */
+   - potatoes: goes up (potato added or chain plugged in) → potatoAdded() → a poster is pasted */
 (function () {
     var MESSAGES = window.BLTL_MESSAGES;
 
@@ -18,19 +16,14 @@
     var photos = document.querySelectorAll('.photo img');
 
     var attacks = [];       // one list of undo steps per attack on the page
-    var lastPotatoes = 0;
-    var wasPlugged = true;  // no flash when the page opens
+    var lastAdded = null;      // last graffiti or poster put on the page
+    var pageOpened = false;    // false while the page replays the log on opening
+    var lastPotatoes = null;   // null = page just opened, no flash yet
 
     // Graffiti and posters go in this layer over the whole page
     var layer = document.createElement('div');
     layer.id = 'layer';
     document.body.appendChild(layer);
-
-    // Charge bar at the bottom of the page
-    var gauge = document.createElement('div');
-    gauge.id = 'gauge';
-    gauge.innerHTML = '<div></div>';
-    document.body.appendChild(gauge);
 
     // ---------- helpers ----------
 
@@ -55,6 +48,7 @@
         el.style.top = between(0, 95) + '%';
         el.style.transform = 'rotate(' + between(-15, 15) + 'deg)';
         layer.appendChild(el);
+        lastAdded = el;
     }
 
     // ---------- effects (each one returns how to undo it) ----------
@@ -75,7 +69,7 @@
         var el = document.createElement('span');
         el.className = 'tag';
         el.textContent = random(MESSAGES.tags);
-        el.style.fontSize = between(8, 20) + 'rem';
+        el.style.fontSize = between(5, 10) + 'rem';
         place(el);
         return function () { el.remove(); };
     }
@@ -144,6 +138,9 @@
 
         attacks.push(undo);
         setStages(n);
+
+        // Show the new attack (not the old ones replayed when the page opens)
+        if (pageOpened) lastAdded.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     // The company undoes the last attack
@@ -154,8 +151,9 @@
     }
 
     function potatoAdded(count) {
-        // TODO: feedback when a potato is added
         console.log('Potato added: ' + count);
+        poster();
+        lastAdded.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     function update(state) {
@@ -164,13 +162,9 @@
         while (attacks.length < log.length) attack(Number(log[attacks.length]));
         while (attacks.length > log.length) repair();
 
-        if (state.plugged && !wasPlugged) flash();
-        wasPlugged = state.plugged;
-
-        gauge.firstChild.style.width = (state.charge * 100) + '%';
-
-        if (state.potatoes > lastPotatoes) potatoAdded(state.potatoes);
+        if (lastPotatoes !== null && state.potatoes > lastPotatoes) potatoAdded(state.potatoes);
         lastPotatoes = state.potatoes;
+        pageOpened = true;
     }
 
     function poll() {
