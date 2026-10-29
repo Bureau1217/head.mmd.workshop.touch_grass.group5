@@ -2,9 +2,9 @@
    4 times a second, asks the ESP32 for its state (/state):
      { "charge": 0…1, "log": "1123", "potatoes": 12, ... }
    - log:      one digit per attack = its level (1, 2 or 3)
-       log gets longer  → attack
+       log gets longer  → attack: a potato of the army charges, then the page changes
        log gets shorter → repair (the company undoes the last attack)
-   - potatoes: goes up (potato added or chain plugged in) → potatoAdded() → a poster is pasted */
+   - potatoes: number of potatoes of the army on screen (potatoarmy.js) */
 (function () {
     var MESSAGES = window.BLTL_MESSAGES;
 
@@ -15,10 +15,8 @@
     var targets = document.querySelectorAll('h1, h2, h4, .hero p, .card p, .about p, .markets li, .btn, .phone a, .footer address');
     var photos = document.querySelectorAll('.photo img');
 
-    var attacks = [];       // one list of undo steps per attack on the page
-    var lastAdded = null;      // last graffiti or poster put on the page
+    var attacks = [];          // one list of undo steps per attack on the page
     var pageOpened = false;    // false while the page replays the log on opening
-    var lastPotatoes = null;   // null = page just opened, no flash yet
 
     // Graffiti and posters go in this layer over the whole page
     var layer = document.createElement('div');
@@ -37,18 +35,18 @@
 
     // Title: first part highlighted
     function headline(el, msg) {
-        el.innerHTML = '<span class="hl"></span> ';
+        el.innerHTML = '<mark class="hl"></mark> ';
         el.firstChild.textContent = msg[0];
         el.append(msg[1]);
     }
 
     // Drop an element somewhere on the page, rotated
     function place(el) {
-        el.style.left = between(0, 80) + '%';
+        // make it inside the viewport, but not too close to the edges (so it doesn't get cut off)
+        el.style.left = between(0, 90) + '%';
         el.style.top = between(0, 95) + '%';
         el.style.transform = 'rotate(' + between(-15, 15) + 'deg)';
         layer.appendChild(el);
-        lastAdded = el;
     }
 
     // ---------- effects (each one returns how to undo it) ----------
@@ -79,7 +77,7 @@
         img.className = 'poster';
         img.src = 'assets/images/' + random(MESSAGES.posters);
         img.alt = '';
-        img.style.width = between(28, 56) + '%';
+        img.style.width = between(28, 45) + '%';
         place(img);
         return function () { img.remove(); };
     }
@@ -114,33 +112,36 @@
         });
     }
 
-    function flash() {
-        document.body.classList.add('flash');
-        setTimeout(function () { document.body.classList.remove('flash'); }, 150);
-    }
-
     // ---------- events from the ESP32 ----------
 
     // level = 1, 2 or 3
     function attack(level) {
         var n = attacks.length + 1;    // attack number (1, 2, 3…)
+        var target = n <= targets.length ? targets[n - 1] : random(targets);
         var undo = [];
+        attacks.push(undo);
 
-        if (n <= targets.length) undo.push(replaceText(targets[n - 1]));
-        undo.push(graffiti());
+        // What happens to the page when the potato hits
+        function hit() {
+            if (attacks.indexOf(undo) < 0) return;   // already repaired before the hit
 
-        if (level >= 2) {
-            undo.push(poster());
-            undo.push(swapPhoto());
+            if (n <= targets.length) undo.push(replaceText(target));
+            undo.push(graffiti());
+
+            if (level >= 2) {
+                undo.push(poster());
+                undo.push(swapPhoto());
+            }
+
+            if (n === STAGES[3]) undo.push(takeover());
+            setStages(n);
         }
 
-        if (n === STAGES[3]) undo.push(takeover());
+        // Old attacks replayed when the page opens: no animation
+        if (!pageOpened) return hit();
 
-        attacks.push(undo);
-        setStages(n);
-
-        // Show the new attack (not the old ones replayed when the page opens)
-        if (pageOpened) lastAdded.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        potatoArmy.attack(target, hit);
     }
 
     // The company undoes the last attack
@@ -150,20 +151,13 @@
         setStages(attacks.length);
     }
 
-    function potatoAdded(count) {
-        console.log('Potato added: ' + count);
-        poster();
-        lastAdded.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
     function update(state) {
         var log = state.log || '';
 
         while (attacks.length < log.length) attack(Number(log[attacks.length]));
         while (attacks.length > log.length) repair();
 
-        if (lastPotatoes !== null && state.potatoes > lastPotatoes) potatoAdded(state.potatoes);
-        lastPotatoes = state.potatoes;
+        potatoArmy.setCount(state.potatoes);
         pageOpened = true;
     }
 
