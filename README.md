@@ -11,26 +11,22 @@ Pendant que BL Tubercules Labs poursuit son expansion, nous récupérons le surp
 
 Puisque l'entreprise transforme tout en ressource, nous ferons de ses propres excédents une force de résistance.
 
+
+Plus il y a de patates, plus les attaques sont rapides. Tant qu’il y a une sur-production, les patates attaquent. Si la puissance totale baisse les attaques deviennent plus lentes et s’arrêtent.
+
 ### 01. RÉCUPÉRER LE SURPLUS
 Chaque patate compte. Les tubercules récupérés par les activistes sont ajoutés au dispositif pour constituer une réserve d'énergie collective.
 Pas de patate inutile. Pas de surplus oublié.
 
 ### 02. SE CONNECTER AU RÉSEAU
-Un réseau Wi-Fi nommé `BLTL-GUEST` est accessible aux personnes à proximité. Une fois connecté, l'utilisateur tombe sur la page de bienvenue de BLTL.
-Derrière cette page se cache une opération à plus grande échelle. Le réseau est infiltré. La résistance est en marche.
+Un réseau Wi-Fi nommé `BLTL-GUEST` est accessible aux personnes à proximité. Une fois connecté, l'utilisateur tombe sur  une copie de la page bienvenue de l’entreprise. Le réseau est infiltré. La résistance est en marche.
 
-### 03. CHARGER LE SYSTÈME
-Les patates sont connectées en série pour alimenter un supercondensateur. Chaque nouveau tubercule augmente la puissance disponible dans le système.
-L'énergie s'accumule. La pression monte. Le dispositif attend son seuil de déclenchement.
-
-### 04. ATTAQUER BLTL
-Lorsque l'énergie accumulée atteint un seuil suffisant, elle est libérée. Une nouvelle attaque frappe le site web de BLTL : les contenus sont détournés et remplacés par des messages de notre propagande militante.
-Les slogans se succèdent. Le discours corporate se fissure. La patate prend enfin la parole.
+### 03. ATTAQUE SYSTÈME
+BLTL se fait progressivement attaquer par les patates. Les patates sont connectées en série pour alimenter un supercondensateur. Lorsque la quantité est suffisante, l’énergie se vide et attaque le site web. Les contenus se changent à chaque attaque de messages de propagande.
 
 ### 05. PLUS DE PATATES, PLUS DE RÉSISTANCE
 La fréquence des attaques dépend directement du nombre de patates mobilisées.
 Plus nous récupérons de surplus, plus les attaques sont rapides.
-Lorsque la puissance disponible diminue, les attaques ralentissent. Si elle devient insuffisante, elles s'arrêtent. Tant que la surproduction persiste, la résistance peut reprendre !
 
 ### NOTRE MOT D'ORDRE
 
