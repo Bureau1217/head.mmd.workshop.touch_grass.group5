@@ -253,7 +253,7 @@ void handleState() {
   json += "{\"charge\":";   json += String(min(1.0f, charge / CAP_THRESHOLD), 3);
   json += ",\"log\":\"";    json += attackLog;
   json += "\",\"volts\":";  json += String(lastVolts, 2);
-  json += ",\"potatoes\":"; json += potatoCount();
+  json += ",\"potatoes\":"; json += isPlugged() ? potatoCount() : 0;   // unplugged reads ~1.6 V: not real potatoes
   json += ",\"plugged\":";  json += isPlugged() ? "true" : "false";
   json += "}";
   server.sendHeader("Cache-Control", "no-store");
