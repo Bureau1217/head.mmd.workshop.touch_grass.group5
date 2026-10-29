@@ -27,7 +27,6 @@ body {
 #layer > * {
     position: absolute;
     line-height: 1;
-    white-space: nowrap;
 }
 
 .poster {
@@ -40,6 +39,10 @@ body {
     font-weight: 800;
     text-transform: uppercase;
     color: var(--hack-color);
+    max-width: 80%;
+    text-shadow: 10px 0 #000, -10px 0 #000, 0 10px #000, 0 -10px #000,
+             5px 5px #000, -5px -5px #000, 5px -5px #000, -5px 5px #000;
+
 }
 
 /* Stage 2: photos and layout start to rot */
@@ -94,21 +97,4 @@ html.deface-3 {
 .manifesto p {
     max-width: 40em;
     font-size: 1.2rem;
-}
-
-/* Flash when the chain is plugged in: on at once, then fades out */
-body:after {
-    content: '';
-    position: fixed;
-    z-index: 99;
-    inset: 0;
-    background: white;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .1s;
-}
-
-body.flash:after {
-    opacity: 1;
-    transition: none;
 }
