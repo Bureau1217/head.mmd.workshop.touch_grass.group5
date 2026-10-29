@@ -7,7 +7,9 @@
   partitions.csv in this folder makes room for them: nothing to choose in Tools.
 
   Talks to assets/js/deface.js through /state:
-    { "charge": 0…1, "log": "1123" }   one digit per attack = its level (1, 2 or 3)
+    { "charge": 0…1, "log": "1123", "volts": 9.5, "potatoes": 11, "plugged": true }
+    log = one digit per attack = its level (1, 2 or 3)
+    When the chain is unplugged, the last digit is removed every REPAIR_MS (repair)
 
   Potatoes (voltage divider ÷11, up to 30 potatoes):
     copper (+) of the last potato ── 1 MΩ ──┬──────────┬──── A2 (GPIO 34)
@@ -36,16 +38,21 @@ const char* SSID = "BLTL-GUEST";
 
 const int   PIN_POTATOES     = 34;     // A2. Not A0/A1: they can't read analog with WiFi on
 const float DIVIDER          = 11.0;   // (1 MΩ + 100 kΩ) / 100 kΩ
-const float VOLTS_PER_POTATO = 0.9;    // CAP.voltsPerPotato in deface.js
+const float VOLTS_PER_POTATO = 0.9;
 
-// --- Virtual supercapacitor: same values as CAP in deface.js ---
+// --- Virtual supercapacitor ---
 const float CAP_RESISTANCE = 5;       // charging = volts² / resistance, per second
 const float CAP_LEAK       = 1;        // lost per second
 const float CAP_THRESHOLD  = 200;      // discharge (attack) when reached
-const float LEVEL_VOLTS[2] = { 1.2, 2.5 };  // LEVEL_VOLTS in deface.js: level 2 from 8 potatoes, 3 from 15
+const float LEVEL_VOLTS[2] = { 15 };  // level 2 from 8 potatoes, 3 from 15
 
 // When the log gets this long, everything resets and the clean site comes back
 const int   MAX_LOG = 2000;
+
+// Below this voltage the chain counts as unplugged
+const float PLUGGED_VOLTS = 0.3;
+// While unplugged, the company repairs the site: one attack undone every…
+const unsigned long REPAIR_MS = 20000;
 
 // LCD only (the website uses assets/js/messages.js)
 const char* LCD_SLOGANS[] = {
@@ -60,7 +67,7 @@ float lastVolts = 0;
 char  attackLog[MAX_LOG + 1] = "";     // "1123…": one digit per attack
 int   logLength = 0;
 bool  filesOk = false;
-unsigned long lastTick = 0, lastLog = 0;
+unsigned long lastTick = 0, lastLog = 0, lastRepair = 0;
 
 DNSServer dns;
 WebServer server(80);
@@ -69,7 +76,6 @@ IPAddress apIP(192, 168, 4, 1);
 LiquidCrystal lcd(27, 33, 32, 14, 26, 25);   // RS, E, D4, D5, D6, D7
 const unsigned long LCD_STEP_MS = 250;
 String lcdMsgText;
-int    lcdLevel = 1;
 unsigned long lcdAttackStart = 0, lcdAttackDur = 0, lastLcd = 0;
 
 // ================= POTATOES & CAPACITOR =================
@@ -85,7 +91,7 @@ int levelFor(float volts) {
   return volts >= LEVEL_VOLTS[1] ? 3 : volts >= LEVEL_VOLTS[0] ? 2 : 1;
 }
 
-void lcdShowAttack(const char* msg, int level);
+void lcdShowAttack(const char* msg);
 
 void resetAll() {
   logLength = 0;
@@ -99,14 +105,23 @@ void attack() {
   int level = levelFor(lastVolts);
   attackLog[logLength++] = '0' + level;
   attackLog[logLength] = '\0';
-  Serial.printf("⚡ ATTACK #%d — level %d (%.1f V)\n", logLength, level, lastVolts);
-  lcdShowAttack(LCD_SLOGANS[random(NUM_SLOGANS)], level);
+  Serial.printf("ATTACK #%d — level %d (%.1f V)\n", logLength, level, lastVolts);
+  lcdShowAttack(LCD_SLOGANS[random(NUM_SLOGANS)]);
+}
+
+bool isPlugged() { return lastVolts >= PLUGGED_VOLTS; }
+
+// The company removes the last attack from the log
+void repair() {
+  logLength--;
+  attackLog[logLength] = '\0';
+  Serial.printf("REPAIR — %d attacks left\n", logLength);
 }
 
 void updateCapacitor() {
   unsigned long now = millis();
   float dt = (now - lastTick) / 1000.0;
-  if (dt < 0.1) return;                 // 10× per second, like the simulator
+  if (dt < 0.1) return;                 // 10× per second
   lastTick = now;
 
   lastVolts = readVoltage();
@@ -115,6 +130,14 @@ void updateCapacitor() {
   if (charge >= CAP_THRESHOLD) {
     charge = 0;                         // full discharge
     attack();
+  }
+
+  // Unplugged: one repair every REPAIR_MS
+  if (isPlugged()) {
+    lastRepair = now;
+  } else if (logLength > 0 && now - lastRepair >= REPAIR_MS) {
+    lastRepair = now;
+    repair();
   }
 
   if (now - lastLog >= 1000) {
@@ -145,9 +168,8 @@ String lcdText(const char* s) {
   return out;
 }
 
-void lcdShowAttack(const char* msg, int level) {
+void lcdShowAttack(const char* msg) {
   lcdMsgText = lcdText(msg);
-  lcdLevel = level;
   int extra = max(0, (int)lcdMsgText.length() - 16);
   lcdAttackDur = (extra + 8) * LCD_STEP_MS;      // pause 1 s, scroll, pause 1 s
   lcdAttackStart = millis();
@@ -161,8 +183,8 @@ void updateLcd() {
   char line[17];
 
   if (now - lcdAttackStart < lcdAttackDur) {
-    // Attack: number + level, then the slogan (scrolling if long)
-    snprintf(line, sizeof line, "ATTAQUE %-4d N%d ", logLength, lcdLevel);
+    // Attack: number, then the slogan (scrolling if long)
+    snprintf(line, sizeof line, "ATTAQUE %-4d    ", logLength);
     lcd.setCursor(0, 0); lcd.print(line);
     int extra = max(0, (int)lcdMsgText.length() - 16);
     int pos = constrain((int)((now - lcdAttackStart) / LCD_STEP_MS) - 4, 0, extra);
@@ -232,6 +254,7 @@ void handleState() {
   json += ",\"log\":\"";    json += attackLog;
   json += "\",\"volts\":";  json += String(lastVolts, 2);
   json += ",\"potatoes\":"; json += potatoCount();
+  json += ",\"plugged\":";  json += isPlugged() ? "true" : "false";
   json += "}";
   server.sendHeader("Cache-Control", "no-store");
   server.send(200, "application/json", json);

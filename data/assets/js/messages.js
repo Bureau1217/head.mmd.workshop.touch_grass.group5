@@ -5,7 +5,6 @@
    tags:      graffiti sprayed over the page
    posters:   pasted over the page (level 2: 8+ potatoes)
    photos:    replace the corporate photos (level 2: 8+ potatoes)
-   sounds:    played on each attack (level 3: 15+ potatoes)
    crash:     lines of the fake server crash */
 window.BLTL_MESSAGES = {
     headlines: [
@@ -40,14 +39,12 @@ window.BLTL_MESSAGES = {
         'Le champ n’est pas une usine. La patate n’est pas un produit. Le surplus n’est pas un accident.'
     ],
     tags: ['Patate libre', 'BLTL: Built on Lies!', 'Trop c\'est trop ','WE ARE NOT YOUR FRIES!','FREE THE POTATOES!', 'Patates exploitées, profits démesurés', 'On germe'],
-    posters: ['poster-travaille.jpg', 'poster-epluche.jpg', 'poster-poches.jpg', 'poster-rapport.jpg', 'A5 greve travail.png', 
-    ],
+    posters: ['poster-travaille.jpg', 'poster-epluche.jpg', 'poster-poches.jpg', 'poster-rapport.jpg', 'poster-greve.png', 'poster-stop.png', 'poster-freepotato.png', 'poster-stop-prod-wide.png' ],
     photos: ['waste-1.jpg', 'waste-2.jpg', 'waste-3.jpg', 'waste-4.jpg'],
-    sounds: ['manif.mp3', 'patate.mp3', 'citation.mp3'],
 
     logoTag: 'Front de libération des patates',
     manifesto: {
-        title: ['Patate Partout Justice Nulle'],
-        text: 'Nous nous tairons jamais.'
+        title: ['Patate Partout', 'Justice Nulle Part'],
+        text: ['Nous nous tairons jamais.']
     }
 };
