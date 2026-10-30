@@ -78,7 +78,7 @@
     const skin = skins[Math.floor(Math.random() * skins.length)];
     const x = POTATO_WIDTH + Math.random() * (W - 2 * POTATO_WIDTH);
     const potato = Bodies.rectangle(x, -skin.height, POTATO_WIDTH, skin.height, {
-      chamfer: { radius: Math.min(POTATO_WIDTH, skin.height) * 0.45 },   // rounded corners
+      chamfer: { radius: Math.min(POTATO_WIDTH, skin.height) * 0.45, quality: 3 },   // rounded corners
       restitution: 0.3, friction: 0.6, density: 0.002,
       render: { sprite: { texture: skin.textures[0], xScale: 1, yScale: 1 } }
     });
