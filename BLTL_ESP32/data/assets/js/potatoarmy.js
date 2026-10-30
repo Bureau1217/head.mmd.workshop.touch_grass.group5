@@ -1,6 +1,6 @@
 /* BLTL — the potato army. Only the animation: deface.js tells it what to do.
      potatoArmy.setCount(n)       n potatoes on screen = n potatoes in the chain
-     potatoArmy.attack(el, hit)   a potato rises, turns red, charges at el, then calls hit()
+     potatoArmy.attack(el, hit)   a potato rises, charges at el, then calls hit()
    Needs matter.min.js (physics) loaded before. */
 (() => {
   const { Engine, Render, Runner, Bodies, Body, Composite } = Matter;
@@ -9,8 +9,6 @@
   const SKINS = ['assets/images/potato1.png', 'assets/images/potato2.png', 'assets/images/potato3.png'];
   const POTATO_WIDTH = 200;   // on screen, the height follows the PNG
   const MAX_POTATOES = 40;   // more would slow the page down
-  const RED_STEPS = 8;       // how many shades between normal and red
-  const MAX_RED = 0.6;       // 0.9 = very red
   const RISE_HEIGHT = 220;   // how high the attacker rises before charging
 
   // ---------- physics world ----------
@@ -46,30 +44,19 @@
     const height = Math.round(POTATO_WIDTH * img.height / img.width);
     const textures = [];
 
-    for (let i = 0; i <= RED_STEPS; i++) {
-      const canvas = document.createElement('canvas');
-      canvas.width = POTATO_WIDTH;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, POTATO_WIDTH, height);
-      ctx.globalCompositeOperation = 'source-atop';   // paint red only on the potato, not around
-      ctx.fillStyle = `rgba(255, 0, 0, ${MAX_RED * i / RED_STEPS})`;
-      ctx.fillRect(0, 0, POTATO_WIDTH, height);
+    const canvas = document.createElement('canvas');
+    canvas.width = POTATO_WIDTH;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, POTATO_WIDTH, height);
+    render.textures[src + '#0'] = canvas;
+    textures.push(src + '#0');
 
-      const name = src + '#' + i;
-      render.textures[name] = canvas;
-      textures.push(name);
-    }
     skins.push({ height, textures });
   }
 
   const ready = Promise.all(SKINS.map(loadSkin))
     .catch(() => console.error('Potato army: missing PNG in ' + SKINS.join(', ')));
-
-  // red = 0 (normal) … 1 (fully red)
-  function setRed(potato, red) {
-    potato.render.sprite.texture = potato.skin.textures[Math.round(red * RED_STEPS)];
-  }
 
   // ---------- potatoes ----------
   const potatoes = [];
@@ -152,7 +139,6 @@
         y: start.y - RISE_HEIGHT * smooth(k)
       });
       Body.setAngle(potato, Math.sin(k * 10) * 0.2);
-      setRed(potato, k);
     });
 
     // 2. charge at the target
@@ -173,7 +159,6 @@
     potato.isSensor = false;
     Body.setVelocity(potato, { x: (Math.random() - 0.5) * 8, y: -6 });
     Body.setAngularVelocity(potato, 0.3);
-    animate(1500, k => setRed(potato, 1 - k));
     potato.fighting = false;
   }
 

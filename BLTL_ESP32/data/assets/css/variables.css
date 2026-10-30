@@ -12,6 +12,13 @@
     src: url(../fonts/credible.woff2) format('woff2');
 }
 
+@font-face {
+    font-family: 'BrushUp';
+    font-weight: 400;
+    font-display: swap;
+    src: url(../fonts/BrushUp.woff2) format('woff2');
+}
+
 :root {
     color-scheme: light;
 
@@ -47,7 +54,7 @@
     --section-gap: 56px;
 
     /* defacement (css/deface.css) */
-    --font-hack: 'Credible', Courier, monospace;
+    --font-hack: 'BrushUp', Courier, monospace;
     --hack-color: #ff00ff;
     --hack-bg: #7f5a6f;
     --hack-text: #c6ff36;

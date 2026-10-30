@@ -1,7 +1,7 @@
 /* BLTL — defacement effects, driven by js/deface.js. Colours in variables.css */
 
 /* Replaced texts */
-.hacked {
+.hacked, .phone a.hacked  {
     background: var(--hack-bg);
     color: var(--hack-text);
     font-family: var(--font-hack);
@@ -34,8 +34,24 @@ body {
     /* box-shadow: 0 6px 18px rgba(0, 0, 0, .35); */
 }
 
+h1.hacked, h2.hacked{
+    font-family: 'Credible';
+}
+
+h2.hacked {
+    font-size: 2.5em;
+}
+
+h3.hacked, h4.hacked {
+    font-size: 2em;
+}
+
+p.hacked {
+    font-size: 1.5em;
+}
+
 .tag {
-    font-family: var(--font-hack);
+    font-family: 'Credible';
     font-weight: 800;
     text-transform: uppercase;
     color: var(--hack-color);
