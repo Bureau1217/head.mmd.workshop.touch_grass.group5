@@ -1,0 +1,20 @@
+#/etc/systemd/system/kiosk.service
+[Unit] 
+Description=Chromium Kiosk (http://192.168.4.1)
+Wants=graphical.target network-online.target
+After=graphical.target network-online.target
+
+[Service]
+Type=simple
+User=potato
+Group=potato
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+Environment=WAYLAND_DISPLAY=wayland-0
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=/home/potato/.Xauthority
+ExecStart=/usr/local/bin/kiosk.sh
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=graphical.target
