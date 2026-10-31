@@ -77,6 +77,7 @@
         img.className = 'poster';
         img.src = 'assets/images/' + random(MESSAGES.posters);
         img.alt = '';
+        img.decoding = 'async';   // don't freeze the animations while the image decodes
         img.style.width = between(28, 45) + '%';
         place(img);
         return function () { img.remove(); };
@@ -85,6 +86,7 @@
     function swapPhoto() {
         var img = random(photos);
         var oldSrc = img.src;
+        img.decoding = 'async';
         img.src = 'assets/images/' + random(MESSAGES.photos);
         return function () { img.src = oldSrc; };
     }
@@ -157,6 +159,7 @@
         while (attacks.length < log.length) attack(Number(log[attacks.length]));
         while (attacks.length > log.length) repair();
 
+        potatoArmy.setPlugged(state.plugged);
         potatoArmy.setCount(state.potatoes);
         pageOpened = true;
     }

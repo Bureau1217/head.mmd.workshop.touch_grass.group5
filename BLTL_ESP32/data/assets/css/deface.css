@@ -58,7 +58,7 @@ p.hacked {
     max-width: 80%;
     text-shadow: 10px 0 #000, -10px 0 #000, 0 10px #000, 0 -10px #000,
              5px 5px #000, -5px -5px #000, 5px -5px #000, -5px 5px #000;
-
+    will-change: transform;   /* own layer: a new tag doesn't repaint the other ones (they freeze the animation) */
 }
 
 /* Stage 2: photos and layout start to rot */
