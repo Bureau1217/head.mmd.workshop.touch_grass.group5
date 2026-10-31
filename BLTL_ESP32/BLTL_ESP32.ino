@@ -41,7 +41,7 @@ const float DIVIDER          = 11.0;   // (1 MΩ + 100 kΩ) / 100 kΩ
 const float VOLTS_PER_POTATO = 0.9;
 
 // --- Virtual supercapacitor ---
-const float CAP_RESISTANCE = 5;       // charging = volts² / resistance, per second
+const float CAP_RESISTANCE = 10;       // charging = volts² / resistance, per second
 const float CAP_LEAK       = 1;        // lost per second
 const float CAP_THRESHOLD  = 200;      // discharge (attack) when reached
 const float LEVEL_VOLTS[2] = { 7.2, 13.5 };  // level 2 from 8 potatoes, 3 from 15
@@ -50,7 +50,7 @@ const float LEVEL_VOLTS[2] = { 7.2, 13.5 };  // level 2 from 8 potatoes, 3 from 
 const int   MAX_LOG = 2000;
 
 // Below this voltage the chain counts as unplugged
-const float PLUGGED_VOLTS = 2.8;   // unplugged reads ~1.6 V (ADC offset), 4 potatoes ~4.0 V
+const float PLUGGED_VOLTS = 2.8;   // unplugged reads ~1.6–1.9 V (ADC offset), 4 potatoes ~4.0 V
 // While unplugged, the company repairs the site: one attack undone every…
 const unsigned long REPAIR_MS = 20000;
 
@@ -85,6 +85,8 @@ float readVoltage() {
   return (sum / 64.0) / 1000.0 * DIVIDER;   // voltage of the whole potato chain
 }
 
+bool isPlugged() { return lastVolts >= PLUGGED_VOLTS; }
+
 int potatoCount() { return (int)(lastVolts / VOLTS_PER_POTATO + 0.5); }
 
 int levelFor(float volts) {
@@ -109,8 +111,6 @@ void attack() {
   lcdShowAttack(LCD_SLOGANS[random(NUM_SLOGANS)]);
 }
 
-bool isPlugged() { return lastVolts >= PLUGGED_VOLTS; }
-
 // The company removes the last attack from the log
 void repair() {
   logLength--;
@@ -125,6 +125,7 @@ void updateCapacitor() {
   lastTick = now;
 
   lastVolts = readVoltage();
+  if (lastVolts < PLUGGED_VOLTS) lastVolts = 0;   // unplugged: the reading is only ADC offset
   float net = lastVolts * lastVolts / CAP_RESISTANCE - CAP_LEAK;
   charge = max(0.0f, charge + net * dt);
   if (charge >= CAP_THRESHOLD) {
@@ -253,7 +254,7 @@ void handleState() {
   json += "{\"charge\":";   json += String(min(1.0f, charge / CAP_THRESHOLD), 3);
   json += ",\"log\":\"";    json += attackLog;
   json += "\",\"volts\":";  json += String(lastVolts, 2);
-  json += ",\"potatoes\":"; json += isPlugged() ? potatoCount() : 0;   // unplugged reads ~1.6 V: not real potatoes
+  json += ",\"potatoes\":"; json += potatoCount();
   json += ",\"plugged\":";  json += isPlugged() ? "true" : "false";
   json += "}";
   server.sendHeader("Cache-Control", "no-store");
