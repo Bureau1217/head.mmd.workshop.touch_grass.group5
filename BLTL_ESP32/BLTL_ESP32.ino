@@ -19,7 +19,7 @@
   LCD 16×2 from the Arduino Starter Kit (optional — runs fine without it):
     LCD 1  VSS → GND              LCD 9–10 D2–D3 → nothing
     LCD 2  VDD → VUSB (5 V)       LCD 11 D4 → GPIO 32
-    LCD 3  V0  → middle pin of the 10 kΩ potentiometer (outer pins: VUSB and GND)
+    LCD 3  V0  → 1.6 kΩ → GND (sets the contrast)
     LCD 4  RS  → GPIO 27          LCD 12 D5 → GPIO 14
     LCD 5  RW  → GND (important)  LCD 13 D6 → GPIO 26 (A0)
     LCD 6  E   → GPIO 33          LCD 14 D7 → GPIO 25 (A1)
